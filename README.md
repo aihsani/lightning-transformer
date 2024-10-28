@@ -1,0 +1,1 @@
+Exercises with open source language models. Simple training routines for GPT2 and Llama2 with implementations from examples provided by Sebastian Raschka in various sources
