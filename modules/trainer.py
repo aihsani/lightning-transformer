@@ -7,7 +7,7 @@ from metrics import evaluate_model
 
 class TrainingModule(L.LightningModule):
 
-    def __init__(self, model, learning_rate, weight_decay, tokenizer, test_string, eval_num_batches=1, eval_freq=5):
+    def __init__(self, model, learning_rate, weight_decay, tokenizer, test_string, temperature=0.0, eval_num_batches=1, eval_freq=5):
         super().__init__()
         self.model = model
         self.learning_rate = learning_rate
@@ -16,6 +16,7 @@ class TrainingModule(L.LightningModule):
         self._test_string = test_string
         self.eval_freq = eval_freq
         self.eval_iter = eval_num_batches
+        self.temp = temperature
 
     def forward(self, x):
         return self.model(x)
@@ -23,6 +24,10 @@ class TrainingModule(L.LightningModule):
     def training_step(self, batch, batch_idx):
         input_batch, target_batch = batch
         logits = self(input_batch)
+
+        if self.temp > 0.0:
+            logits = logits / self.temp
+
         loss = F.cross_entropy(logits.flatten(0, 1), target_batch.flatten())
         self.log("train_loss", loss, prog_bar=True)
         return loss
@@ -30,6 +35,10 @@ class TrainingModule(L.LightningModule):
     def validation_step(self, batch, batch_idx):
         input_batch, target_batch = batch
         logits = self(input_batch)
+
+        if self.temp > 0.0:
+            logits = logits / self.temp
+
         loss = F.cross_entropy(logits.flatten(0, 1), target_batch.flatten())
         self.log("val_loss", loss, prog_bar=True)
 
@@ -58,4 +67,5 @@ class TrainingModule(L.LightningModule):
             tokenizer=self.tokenizer,
             device=self.device,
             start_context=self._test_string,
+            temperature=self.temp,
         )

@@ -48,7 +48,7 @@ def main():
 
     TRAINING_CONFIG = {
         "learning_rate": 5e-4,
-        "weight_decay":  0.1,
+        "weight_decay":  1,
         "batch_size":    2,
         "num_epochs":    25,
     }
@@ -70,7 +70,8 @@ def main():
         learning_rate=TRAINING_CONFIG["learning_rate"],
         weight_decay=TRAINING_CONFIG["weight_decay"],
         tokenizer=tokenizer,
-        test_string="he laid down"
+        test_string="Every effort moves you",
+        temperature=0.1,
     )
 
     training_loader = DataLoader(
