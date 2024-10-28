@@ -1,0 +1,10 @@
+tiktoken
+tensorboardX
+lightning
+torch
+torchvision
+torchaudio
+pandas
+GPUtil
+psutil
+sqlalchemy
