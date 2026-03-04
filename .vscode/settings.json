@@ -72,7 +72,7 @@
   },
   "files.enableTrash": false,
   "autopep8.path": [
-    "autopep8"
+    "/home/aihsani/projects/lightning-transformer/lightning-transformer/.venv/bin/autopep8"
   ],
   "autopep8.args": [
     "--max-line-length",
